@@ -10,7 +10,7 @@
 
   <!-- 네비게이션 바 -->
   <nav>
-    <button onclick="showNav()">Healthcare Website</button>
+    <span onclick="showNav()">Healthcare Website</span>
     <ul id="nav-list" style="display: none;">
       <li><a href="#checklist">운동 체크리스트</a></li>
       <li><a href="#caloriesContainer">칼로리/물 소비량</a></li>
@@ -18,8 +18,28 @@
     </ul>
   </nav>
 
+  <div class="recommendation-container">
+    <h2>오늘의 운동 추천</h2>
+    <!-- 카테고리 선택 -->
+    <label for="exerciseCategory">운동 카테고리:</label>
+    <select id="exerciseCategory" onchange="updateExerciseRecommendations()">
+      <option value="">카테고리를 선택하세요</option>
+      <option value="카테고리 1">카테고리 1</option>
+      <option value="카테고리 2">카테고리 2</option>
+      <option value="카테고리 3">카테고리 3</option>
+      <option value="카테고리 4">카테고리 4</option>
+    </select>
+  
+    <!-- 추천 목록 -->
+    <ul id="recommendationList"></ul>
+    </div>
+
+    <!-- YouTube 영상 표시 컨테이너 -->
+    <div id="youtubeContainer" class="container" style="display: none;">
+    </div>
+
   <!-- 운동 체크리스트 -->
-  <div class="checklist-container">
+  <div class="container checklist-container">
     <h2>오늘의 운동 체크리스트</h2>
     <div id="checklist">
       <label><input type="checkbox" id="item1"> 운동 1 <button onclick="removeItem(this)">삭제</button></label><br>
@@ -31,7 +51,7 @@
   </div>
 
   <!--칼로리/물 소비량 입력-->
-  <div class="checklist-container">
+  <div class="container checklist-container">
     <h2>오늘의 칼로리/물 소비량</h2>
     
     <div id="checklist">
@@ -52,11 +72,12 @@
     <h3>운동 체크리스트의 값이 여기 표시됩니다!</h3>
   </div>
 
-  <!-- 이미지 다운로드 버튼 -->
-  <button class="download-btn" onclick="downloadImage()">이미지로 저장</button>
+  <!-- 트위터 공유 버튼 -->
+  <button class="share-btn" onclick="shareToTwitter()">이미지 저장 후 트위터에 공유</button>
 
-  <!-- SNS 공유 버튼 (인스타그램, 트위터) -->
-  <button class="share-btn" onclick="shareToSNS()">SNS에 공유</button>
+  <!-- 페이스북 공유 버튼 -->
+  <button class="share-btn" onclick="shareToFacebook()">이미지 저장 후 페이스북에 공유</button>
+
 
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> <!-- html2canvas 라이브러리 -->
   <script src="scripts.js"></script> <!-- JS 파일 연결 -->

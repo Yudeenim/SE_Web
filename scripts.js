@@ -1,147 +1,216 @@
 // 네비게이션 바
 function showNav() {
-    const navList = document.getElementById('nav-list');
-    navList.style.display = navList.style.display === 'block' ? 'none' : 'block';
-  }
-  
-// 체크리스트 내용 기록
-const userInput = document.getElementById('userInput');
-const box = document.getElementById('box');
+  const navList = document.getElementById('nav-list');
+  navList.style.display = navList.style.display === 'block' ? 'none' : 'block';
+}
 
-// 체크리스트 항목 추가 함수
+// 운동 추천 데이터 (카테고리별)
+const exerciseRecommendations = {
+  '카테고리 1': [
+    { name: '1-1', youtube: 'https://www.youtube.com/embed/example1' },
+    { name: '1-2', youtube: 'https://www.youtube.com/embed/example2' },
+    { name: '1-3', youtube: 'https://www.youtube.com/embed/example3' },
+    { name: '1-4', youtube: 'https://www.youtube.com/embed/example4' }
+  ],
+  '카테고리 2': [
+    { name: '2-1', youtube: 'https://www.youtube.com/embed/example5' },
+    { name: '2-2', youtube: 'https://www.youtube.com/embed/example6' },
+    { name: '2-3', youtube: 'https://www.youtube.com/embed/example7' },
+    { name: '2-4', youtube: 'https://www.youtube.com/embed/example8' }
+  ],
+  '카테고리 3': [
+    { name: '3-1', youtube: 'https://www.youtube.com/embed/example9' },
+    { name: '3-2', youtube: 'https://www.youtube.com/embed/example10' },
+    { name: '3-3', youtube: 'https://www.youtube.com/embed/example11' },
+    { name: '3-4', youtube: 'https://www.youtube.com/embed/example12' }
+  ],
+  '카테고리 4': [
+    { name: '4-1', youtube: 'https://www.youtube.com/embed/example13' },
+    { name: '4-2', youtube: 'https://www.youtube.com/embed/example14' },
+    { name: '4-3', youtube: 'https://www.youtube.com/embed/example15' },
+    { name: '4-4', youtube: 'https://www.youtube.com/embed/example16' }
+  ]
+};
+
+function updateExerciseRecommendations() {
+  const category = document.getElementById('exerciseCategory').value; // 선택된 카테고리
+  const recommendationList = document.getElementById('recommendationList');
+
+  // 추천 리스트 초기화
+  recommendationList.innerHTML = '';
+
+  if (category && exerciseRecommendations[category]) {
+    exerciseRecommendations[category].forEach(exercise => {
+      const listItem = document.createElement('li');
+      listItem.textContent = exercise.name;
+
+      // "이 운동 확인하기" 버튼 생성
+      const viewButton = document.createElement('button');
+      viewButton.textContent = '이 운동 확인하기';
+      viewButton.onclick = () => showYouTubeVideo(exercise.name, exercise.youtube);
+
+      listItem.appendChild(viewButton);
+      recommendationList.appendChild(listItem);
+    });
+  }
+}
+
+// YouTube 영상을 표시
+function showYouTubeVideo(exerciseName, youtubeUrl) {
+const youtubeContainer = document.getElementById('youtubeContainer');
+youtubeContainer.innerHTML = `
+  <h3>${exerciseName}</h3>
+  <iframe width="560" height="315" src="${youtubeUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <div>
+    <button onclick="addToChecklist('${exerciseName}')">체크리스트에 추가하기</button>
+    <button onclick="closeYouTube()">닫기</button>
+  </div>
+`;
+youtubeContainer.style.display = 'block';
+}
+
+// YouTube 영상 닫기
+function closeYouTube() {
+const youtubeContainer = document.getElementById('youtubeContainer');
+youtubeContainer.style.display = 'none';
+youtubeContainer.innerHTML = ''; // 내용 초기화
+}
+
+// 체크리스트에 운동 추가
+function addToChecklist(exerciseName) {
+const checklist = document.getElementById('checklist');
+
+const newItem = document.createElement('label');
+newItem.innerHTML = `
+  <input type="checkbox"> ${exerciseName}
+  <button onclick="removeItem(this)">삭제</button><br>
+`;
+
+checklist.appendChild(newItem);
+
+// 새 체크박스 이벤트 리스너 추가
+const newCheckbox = newItem.querySelector('input[type="checkbox"]');
+newCheckbox.addEventListener('change', updateBox);
+
+updateBox(); // 박스 업데이트
+}
+
+// 추천 항목을 체크리스트에 추가
+function addToChecklist(exercise) {
+  const checklist = document.getElementById('checklist');
+  
+  const newItem = document.createElement('label');
+  newItem.innerHTML = `
+    <input type="checkbox"> ${exercise}
+    <button onclick="removeItem(this)">삭제</button><br>
+  `;
+
+  checklist.appendChild(newItem);
+
+  // 새 체크박스 이벤트 리스너 추가
+  const newCheckbox = newItem.querySelector('input[type="checkbox"]');
+  newCheckbox.addEventListener('change', updateBox);
+
+  updateBox(); // 박스 업데이트
+}
+
+
+// 체크리스트 항목 추가
 function addChecklistItem() {
+  const userInput = document.getElementById('userInput');
   const newItemText = userInput.value.trim();
+
   if (newItemText) {
-    // 새로운 체크리스트 항목 생성
+    const checklist = document.getElementById('checklist');
     const newItem = document.createElement('label');
     newItem.innerHTML = `
-      <input type="checkbox"> ${newItemText} 
+      <input type="checkbox" onchange="updateBox()"> ${newItemText} 
       <button onclick="removeItem(this)">삭제</button><br>`;
+    checklist.appendChild(newItem);
 
-    // 체크리스트에 항목 추가
-    document.getElementById('checklist').appendChild(newItem);
-    
-    // 입력 필드 초기화
-    userInput.value = '';  
-    
-    // 박스 내용 업데이트
-    updateBox();
+    userInput.value = ''; // 입력 필드 초기화
+    updateBox(); // 박스 내용 업데이트
   }
 }
 
 // 칼로리/물 소비량 기록
 function displayValues() {
-  // 입력된 값 가져오기
-  var calories = document.getElementById("caloriesInput").value;
-  var water = document.getElementById("waterInput").value;
-
-  // 칼로리 값이 비어있으면 웹 알림
-  if (calories === "") {
-    alert("칼로리 소비량을 입력해주세요.");
-  }
-
-  // 물 소비량 값이 비어있으면 웹 알림
-  if (water === "") {
-    alert("물 소비량을 입력해주세요.");
-  }
-
-  // 박스를 업데이트하는 함수 호출
-  updateBox();  // 운동 체크리스트, 칼로리, 물 소비량 모두 업데이트
+  updateBox(); // 박스 내용 업데이트
 }
 
-// 박스 내용 업데이트 함수
+// 박스 내용 업데이트
 function updateBox() {
   const boxContent = document.getElementById('box');
-  
-  // 체크리스트 항목들을 동적으로 가져오기
   const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
-  let checklistContent = '';
-  let isAnyChecked = false;  // 체크된 항목이 있는지 여부를 확인
-
-  checklistItems.forEach(item => {
-    const itemText = item.parentElement.textContent.replace('삭제', '').trim();
-    if (item.checked) {
-      checklistContent += `<p>✔ ${itemText}</p>`;  // 체크된 항목만 추가
-      isAnyChecked = true;
-    }
-  });
-
-  // 운동 체크리스트가 체크되지 않았을 경우 메시지 추가
-  if (!isAnyChecked) {
-    checklistContent = '<p>운동 체크리스트가 체크되지 않았습니다.</p>';
-  }
-
-  // 칼로리와 물 소비량 표시
   const calories = document.getElementById("caloriesInput").value;
   const water = document.getElementById("waterInput").value;
 
-  let calorieContent = '';
-  let waterContent = '';
-  
-  if (calories !== "") {
-    calorieContent = `<p>칼로리 소비량: ${calories} kcal</p>`;
-  }
+  let checklistContent = '';
+  checklistItems.forEach(item => {
+    const itemText = item.parentElement.textContent.replace('삭제', '').trim();
+    if (item.checked) {
+      checklistContent += `<p>✔ ${itemText}</p>`;
+    }
+  });
 
-  if (water !== "") {
-    waterContent = `<p>물 소비량: ${water} 리터</p>`;
-  }
+  if (!checklistContent) checklistContent = '<p>운동 체크리스트가 체크되지 않았습니다.</p>';
 
-  // 날짜 입력란 유지
-  const existingDate = boxContent.querySelector('input[type="date"]').value;
-
-  // 기존 날짜 입력란과 체크리스트, 칼로리/물 소비량을 모두 조합하여 박스 내용 업데이트
   boxContent.innerHTML = `
-    <input type="date" value="${existingDate}">
+    <input type="date" value="${boxContent.querySelector('input[type="date"]')?.value || ''}">
     <h3>오늘 내가 한 운동은?: </h3>
     ${checklistContent}
-    ${calorieContent}
-    ${waterContent}
+    ${calories ? `<p>칼로리 소비량: ${calories} kcal</p>` : ''}
+    ${water ? `<p>물 소비량: ${water} 리터</p>` : ''}
   `;
 }
 
-// 체크리스트 항목들이 변경될 때마다 박스를 업데이트
-document.querySelectorAll('#checklist input[type="checkbox"]').forEach(item => {
-  item.addEventListener('change', updateBox);
-});
-
-// 칼로리 입력 필드에 입력 이벤트 리스너 추가
-document.getElementById("caloriesInput").addEventListener('input', updateBox);
-
-// 물 소비량 입력 필드에 입력 이벤트 리스너 추가
-document.getElementById("waterInput").addEventListener('input', updateBox);
-
-// 항목 삭제 함수
+// 항목 삭제
 function removeItem(button) {
-  const item = button.parentElement;
-  item.remove();
-  updateBox(); // 항목 삭제 후 박스 업데이트
+  button.parentElement.remove();
+  updateBox(); // 박스 내용 업데이트
 }
 
-// 3. 박스를 이미지로 저장
+// 박스를 이미지로 저장
 function downloadImage() {
-  html2canvas(box).then(canvas => {
+  html2canvas(document.getElementById('box')).then(canvas => {
     const link = document.createElement('a');
     link.href = canvas.toDataURL();
     link.download = 'checklist-box.png';
     link.click();
-
-    alert('이미지가 다운로드되었습니다.');
   });
 }
 
-// 4. SNS 공유 기능 (Twitter)
-function shareToTwitter() {
-  const imageUrl = 'https://via.placeholder.com/150'; // 변경 필요
-  const text = encodeURIComponent('체크리스트를 공유합니다!');
-  const url = `https://twitter.com/intent/tweet?text=${text}&url=${imageUrl}`;
-  window.open(url, '_blank');
+// 캡처한 박스 이미지를 Data URL로 변환
+function captureBoxImage() {
+  return html2canvas(document.getElementById('box')).then(canvas => canvas.toDataURL());
 }
 
-// 4. SNS 공유 기능 (Instagram을 통한 공유 유도)
-function shareToInstagram() {
-    const imageUrl = 'https://via.placeholder.com/150'; // 변경 필요
-    const text = encodeURIComponent('체크리스트를 공유합니다!');   
-    const url = `https://www.instagram.com/?url=${imageUrl}`; 
+// 트위터 공유
+function shareToTwitter() {
+  captureBoxImage().then(imageUrl => {
+    const text = encodeURIComponent('오늘의 체크리스트를 공유합니다!');
+    downloadImage(imageUrl);
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
     window.open(url, '_blank');
-  }
-  
+  });
+}
+
+// 페이스북 공유
+function shareToFacebook() {
+  captureBoxImage().then(() => {
+    downloadImage();
+    const facebookPostUrl = 'https://www.facebook.com/';
+    window.open(facebookPostUrl, '_blank');
+  });
+}
+
+// 초기화: 체크박스 및 입력 필드 변경 시 실시간 업데이트
+document.addEventListener('DOMContentLoaded', () => {
+  const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
+  checklistItems.forEach(item => item.addEventListener('change', updateBox));
+
+  const caloriesInput = document.getElementById('caloriesInput');
+  const waterInput = document.getElementById('waterInput');
+  caloriesInput.addEventListener('input', updateBox);
+  waterInput.addEventListener('input', updateBox);
+});
