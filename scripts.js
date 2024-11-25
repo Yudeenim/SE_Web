@@ -170,6 +170,38 @@ function removeItem(button) {
   updateBox(); // 박스 내용 업데이트
 }
 
+// 음식 항목 추가 함수
+function addFoodItem() {
+  const foodName = document.getElementById("foodNameInput").value.trim();
+  const foodCalorie = document.getElementById("foodCalorieInput").value.trim();
+
+  if (!foodName || !foodCalorie || isNaN(foodCalorie) || foodCalorie < 0) {
+    alert("올바른 음식 이름과 칼로리를 입력하세요!");
+    return;
+  }
+
+  const tableBody = document.querySelector("#foodTable tbody");
+  const row = document.createElement("tr");
+
+  row.innerHTML = `
+    <td>${foodName}</td>
+    <td>${foodCalorie}</td>
+    <td><button onclick="removeFoodItem(this)">삭제</button></td>
+  `;
+
+  tableBody.appendChild(row);
+
+  // 입력 필드 초기화
+  document.getElementById("foodNameInput").value = "";
+  document.getElementById("foodCalorieInput").value = "";
+}
+
+// 음식 항목 삭제 함수
+function removeFoodItem(button) {
+  const row = button.parentElement.parentElement;
+  row.remove();
+}
+
 // 박스를 이미지로 저장
 function downloadImage() {
   html2canvas(document.getElementById('box')).then(canvas => {

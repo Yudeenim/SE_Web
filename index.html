@@ -50,13 +50,13 @@
     <button style = margin-left:0px; onclick="addChecklistItem()">항목 추가</button> <!-- 항목 추가 버튼 -->
   </div>
 
-  <!--칼로리/물 소비량 입력-->
+  <!-- 칼로리/물 소비량 입력 -->
   <div class="container checklist-container">
-    <h2>오늘의 칼로리/물 소비량</h2>
+    <h2>오늘의 칼로리 섭취량과 물 소비량</h2>
     
     <div id="checklist">
       <div id="caloriesContainer">
-        <label for="caloriesInput">칼로리 소비량:</label>
+        <label for="caloriesInput">칼로리 섭취량:</label>
         <input type="number" id="caloriesInput" placeholder="칼로리 수치를 입력하세요" min="0">
       </div>
       
@@ -66,11 +66,52 @@
       </div>
     </div>
 
-  <!-- 이미지 박스 -->
-  <div class="box" id="box">
-    <input type="date">
-    <h3>운동 체크리스트의 값이 여기 표시됩니다!</h3>
+    <!-- 음식별 칼로리 표 -->
+    <h3>음식별 칼로리 표시</h3>
+    <table id="foodTable" style="width: 100%; text-align: left; margin-top: 10px; border: 1px solid;">
+      <thead>
+        <tr>
+          <th>음식 이름</th>
+          <th>칼로리</th>
+          <th>삭제</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 미리 추가된 음식 예시 -->
+        <tr>
+          <td>음식 예시 1</td>
+          <td>11</td>
+          <td><button onclick="removeFoodItem(this)">삭제</button></td>
+        </tr>
+        <tr>
+          <td>음식 예시 2</td>
+          <td>22</td>
+          <td><button onclick="removeFoodItem(this)">삭제</button></td>
+        </tr>
+        <tr>
+          <td>음식 예시 3</td>
+          <td>33</td>
+          <td><button onclick="removeFoodItem(this)">삭제</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 음식 추가 입력 및 버튼 -->
+    <div style="margin-top: 10px;">
+      <input type="text" id="foodNameInput" placeholder="음식 이름 입력" style="margin-right: 10px;">
+      <input type="number" id="foodCalorieInput" placeholder="칼로리 입력" min="0" style="margin-right: 10px;">
+      <button onclick="addFoodItem()">항목 추가</button>
+    </div>
   </div>
+
+
+  <!-- 이미지 박스 -->
+  <div class="container box-container">
+    <h2>운동 요약</h2>
+    <div class="box" id="box">
+      <input type="date">
+      <h3>운동 체크리스트의 값이 여기 표시됩니다!</h3>
+    </div>
 
   <!-- 트위터 공유 버튼 -->
   <button class="share-btn" onclick="shareToTwitter()">이미지 저장 후 트위터에 공유</button>
