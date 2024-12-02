@@ -26,6 +26,13 @@ const exerciseRecommendations = {
   ]
 };
 
+// 체크리스트 운동 항목(기본값)
+const exercises = [
+  { id: 'item1', name: '운동 1' },
+  { id: 'item2', name: '운동 2' },
+  { id: 'item3', name: '운동 3' }
+];
+
 // 운동 추천 항목 업데이트
 function updateExerciseRecommendations() {
   const category = document.getElementById('exerciseCategory').value; // 선택된 카테고리
@@ -140,7 +147,8 @@ function updateBox() {
 
 // 항목 삭제
 function removeItem(button) {
-  button.parentElement.remove();
+  const label = button.parentElement;
+  label.remove();
   updateBox(); // 박스 내용 업데이트
 }
 
@@ -279,7 +287,20 @@ function shareToFacebook() {
 
 // 초기화: 체크박스 및 입력 필드 변경 시 실시간 업데이트
 document.addEventListener('DOMContentLoaded', () => {
+
+  // 체크리스트 항목을 동적으로 생성하여 checklistContainer에 추가
+  const checklistContainer = document.getElementById('checklistContainer');
+  exercises.forEach(exercise => {
+    const label = document.createElement('label');
+    label.innerHTML = `
+      <input type="checkbox" id="${exercise.id}"> ${exercise.name} 
+      <button onclick="removeItem(this)">삭제</button><br>
+    `;
+    checklistContainer.appendChild(label);
+  });
+
   updateTotalCalories(); // 페이지 로드 시 총 칼로리 업데이트
+
   const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
   checklistItems.forEach(item => item.addEventListener('change', updateBox));
 
