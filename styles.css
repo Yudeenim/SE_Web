@@ -211,7 +211,7 @@ nav ul li a {
   margin-left: 20px;
   margin-right: 20px;
   padding: 20px;
-  border: 2px solid red;
+  border: 2px solid gray;
   min-height: 150px;
   background-color: #fff;
 }
