@@ -1,15 +1,3 @@
-/*
-사용된 함수: showNav (네비게이션 바)
-...
-*/
-
-
-// 네비게이션 바
-function showNav() {
-  const navList = document.getElementById('nav-list');
-  navList.style.display = navList.style.display === 'block' ? 'none' : 'block';
-}
-
 // 운동 추천 데이터 (카테고리별)
 const exerciseRecommendations = {
   '카테고리 1': [
@@ -38,6 +26,7 @@ const exerciseRecommendations = {
   ]
 };
 
+// 운동 추천 항목 업데이트
 function updateExerciseRecommendations() {
   const category = document.getElementById('exerciseCategory').value; // 선택된 카테고리
   const recommendationList = document.getElementById('recommendationList');
@@ -83,12 +72,11 @@ youtubeContainer.innerHTML = ''; // 내용 초기화
 }
 
 // 체크리스트에 운동 추가
-function addToChecklist(exerciseName) {
-const checklist = document.getElementById('checklist');
-
+function addToChecklist(exercise) {
+const checklist = document.getElementById('checklistContainer');
 const newItem = document.createElement('label');
 newItem.innerHTML = `
-  <input type="checkbox"> ${exerciseName}
+  <input type="checkbox"> ${exercise}
   <button onclick="removeItem(this)">삭제</button><br>
 `;
 
@@ -101,32 +89,13 @@ newCheckbox.addEventListener('change', updateBox);
 updateBox(); // 박스 업데이트
 }
 
-// 추천 항목을 체크리스트에 추가
-function addToChecklist(exercise) {
-  const checklist = document.getElementById('checklist');
-  
-  const newItem = document.createElement('label');
-  newItem.innerHTML = `
-    <input type="checkbox"> ${exercise}
-    <button onclick="removeItem(this)">삭제</button><br>
-  `;
-
-  checklist.appendChild(newItem);
-
-  // 새 체크박스 이벤트 리스너 추가
-  const newCheckbox = newItem.querySelector('input[type="checkbox"]');
-  newCheckbox.addEventListener('change', updateBox);
-
-  updateBox(); // 박스 업데이트
-}
-
 // 체크리스트 항목 추가
 function addChecklistItem() {
   const userInput = document.getElementById('userInput');
   const newItemText = userInput.value.trim();
 
   if (newItemText) {
-    const checklist = document.getElementById('checklist');
+    const checklist = document.getElementById('checklistContainer');
     const newItem = document.createElement('label');
     newItem.innerHTML = `
       <input type="checkbox" onchange="updateBox()"> ${newItemText} 
@@ -162,7 +131,7 @@ function updateBox() {
 
   boxContent.innerHTML = `
     <input type="date" value="${boxContent.querySelector('input[type="date"]')?.value || ''}">
-    <h3>오늘 내가 한 운동은?: </h3>
+    <h3>오늘 내가 한 운동은? </h3>
     ${checklistContent}
     ${calories ? `<p>칼로리 소비량: ${calories} kcal</p>` : ''}
     ${water ? `<p>물 소비량: ${water} 리터</p>` : ''}
@@ -190,7 +159,7 @@ function addFoodItem() {
 
   row.innerHTML = `
     <td>${foodName}</td>
-    <td>${foodCalorie}</td>
+    <td>${foodCalorie}.toFixed(1)</td>
     <td><button onclick="removeFoodItem(this)">삭제</button></td>
   `;
 
@@ -226,7 +195,7 @@ function addCalorieItem(type) {
   } else if (type === 'half') {
     adjustedCalorie = foodCalorie / 2;
   } else if (type === 'custom') {
-    const customFactor = prompt("몇 배로 칼로리를 계산하시겠습니까? (예: 1.5)");
+    const customFactor = prompt("얼마나 드셨나요? (입력 값 예시: 0.5, 1.5, ...)");
     const customMultiplier = parseFloat(customFactor);
     if (!isNaN(customMultiplier) && customMultiplier > 0) {
       adjustedCalorie = foodCalorie * customMultiplier;
@@ -249,11 +218,14 @@ function addCalorieItem(type) {
 
   // 총 칼로리 업데이트
   updateTotalCalories();
+  updateBox();
 }
 
 // 총 칼로리 업데이트 함수
 function updateTotalCalories() {
   const rows = document.querySelectorAll("#eatenFoodTable tbody tr");
+  document.querySelector("#eatenFoodTable thead").style.display = rows.length === 0 ? "none" : "";
+
   let totalCalories = 0;
 
   rows.forEach(row => {
@@ -261,7 +233,12 @@ function updateTotalCalories() {
     totalCalories += parseFloat(calorieCell.textContent);
   });
 
-  document.getElementById("caloriesInput").value = totalCalories.toFixed(1);
+  const caloriesInput = document.getElementById("caloriesInput");
+  if (rows.length > 0) {
+    caloriesInput.value = totalCalories.toFixed(1);
+  } else {
+    caloriesInput.value = ''; // 비워두기
+  }
 }
 
 
@@ -302,6 +279,7 @@ function shareToFacebook() {
 
 // 초기화: 체크박스 및 입력 필드 변경 시 실시간 업데이트
 document.addEventListener('DOMContentLoaded', () => {
+  updateTotalCalories(); // 페이지 로드 시 총 칼로리 업데이트
   const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
   checklistItems.forEach(item => item.addEventListener('change', updateBox));
 

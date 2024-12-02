@@ -15,17 +15,10 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 섹션 제목 스타일 */
-.container h2 {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
-}
-
 /* 공통 버튼 스타일 */
 button {
   padding: 10px 15px;
+  margin: 5px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -49,11 +42,10 @@ nav {
   align-items: center;
 }
 
-nav span {
-  cursor: pointer;
-  padding: 10px;
+nav p {
+  margin: 0;
   font-size: 18px;
-  color: white;
+  padding-right: 20px;
 }
 
 nav ul {
@@ -62,11 +54,6 @@ nav ul {
   margin: 0;
   display: flex;
   gap: 15px;
-  margin-left: 20px;
-}
-
-nav ul li {
-  display: inline-block;
 }
 
 nav ul li a {
@@ -75,27 +62,7 @@ nav ul li a {
   padding: 5px 10px;
 }
 
-/* 운동 추천 컨테이너 */
-.recommendation-container {
-  margin: 20px;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* 카테고리 선택 */
-.recommendation-container select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  font-size: 16px;
-}
-
-/* 추천 리스트 */
+/* 운동 추천 카테고리 스타일 */
 #recommendationList {
   list-style: none;
   padding: 0;
@@ -127,84 +94,6 @@ nav ul li a {
   background-color: #0056b3;
 }
 
-/* YouTube 영상 컨테이너 */
-#youtubeContainer {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-#youtubeContainer h3 {
-  margin-bottom: 10px;
-  color: #333;
-}
-
-#youtubeContainer iframe {
-  width: 100%;
-  max-width: 560px;
-  height: 315px;
-  border-radius: 8px;
-  border: none;
-}
-
-#youtubeContainer div {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-}
-
-#youtubeContainer button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#youtubeContainer button:hover {
-  background-color: #0056b3;
-}
-
-/* 체크리스트 스타일 */
-.checklist-container {
-  margin-top: 20px;
-  margin-left: 20px;
-}
-
-.checklist-container input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.checklist-container textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.checklist-container button {
-  padding: 10px 15px;
-  margin-left: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.checklist-container button:hover {
-  background-color: #0056b3;
-}
-
 /* 저장할 이미지 박스 */
 .box {
   margin-top: 20px;
@@ -216,12 +105,63 @@ nav ul li a {
   background-color: #fff;
 }
 
-/* SNS 공유 버튼 */
-.share-btn {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #1da1f2;
-  color: white;
-  border: none;
-  cursor: pointer;
+/* 모든 입력 박스 스타일 */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="range"],
+textarea {
+  width: 98%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+/* 텍스트 영역(textarea) 스타일 */
+textarea {
+  resize: vertical; /* 수직 크기만 조정 가능하도록 */
+  height: 120px;
+}
+
+/* placeholder 텍스트 스타일 */
+input::placeholder,
+textarea::placeholder {
+  color: #aaa;
+}
+
+/* 입력박스가 포커스 될 때 스타일 */
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="range"]:focus,
+textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* 드롭다운(select) 스타일 */
+select {
+  width: 100%; /* 동일한 너비 적용 */
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  appearance: none; /* 기본 브라우저 스타일을 없애기 위해 추가 */
+  -webkit-appearance: none; /* Safari 및 Chrome에서 기본 스타일 제거 */
+  -moz-appearance: none; /* Firefox에서 기본 스타일 제거 */
+  transition: all 0.2s ease;
+}
+
+/* 드롭다운의 포커스 스타일 */
+select:focus {
+  border-color: #007bff;
+  outline: none;
 }
