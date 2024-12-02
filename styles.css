@@ -34,7 +34,7 @@ button:hover {
 nav {
   background-color: #333;
   color: white;
-  padding: 10px;
+  padding: 20px;
   text-align: left;
   font-size: 14px;
   display: flex;
@@ -120,18 +120,9 @@ textarea {
   box-sizing: border-box; /* 테두리를 포함하여 크기 계산 */
 }
 
-/* placeholder 텍스트 스타일 */
-input::placeholder,
-textarea::placeholder {
-  color: #aaa;
-}
-
 /* 입력박스가 포커스 될 때 스타일 */
 input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus,
 input[type="number"]:focus,
-input[type="range"]:focus,
 textarea:focus {
   border-color: #007bff;
   outline: none;
