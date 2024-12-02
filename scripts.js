@@ -1,3 +1,9 @@
+/*
+사용된 함수: showNav (네비게이션 바)
+...
+*/
+
+
 // 네비게이션 바
 function showNav() {
   const navList = document.getElementById('nav-list');
@@ -114,7 +120,6 @@ function addToChecklist(exercise) {
   updateBox(); // 박스 업데이트
 }
 
-
 // 체크리스트 항목 추가
 function addChecklistItem() {
   const userInput = document.getElementById('userInput');
@@ -201,6 +206,65 @@ function removeFoodItem(button) {
   const row = button.parentElement.parentElement;
   row.remove();
 }
+
+
+// '전부', '절반', '기타' 버튼 클릭 시 동작하는 함수
+function addCalorieItem(type) {
+  const foodName = document.getElementById("calorieFoodName").value.trim();
+  const foodCalorie = parseFloat(document.getElementById("calorieFoodCalorie").value.trim());
+
+  if (!foodName || isNaN(foodCalorie) || foodCalorie <= 0) {
+    alert("올바른 음식 이름과 칼로리를 입력하세요!");
+    return;
+  }
+
+  let adjustedCalorie = 0;
+  
+  // '전부', '절반', '기타' 처리
+  if (type === 'full') {
+    adjustedCalorie = foodCalorie;
+  } else if (type === 'half') {
+    adjustedCalorie = foodCalorie / 2;
+  } else if (type === 'custom') {
+    const customFactor = prompt("몇 배로 칼로리를 계산하시겠습니까? (예: 1.5)");
+    const customMultiplier = parseFloat(customFactor);
+    if (!isNaN(customMultiplier) && customMultiplier > 0) {
+      adjustedCalorie = foodCalorie * customMultiplier;
+    } else {
+      alert("올바른 숫자를 입력하세요.");
+      return;
+    }
+  }
+
+  // '오늘 먹은 음식' 테이블에 추가
+  const tableBody = document.querySelector("#eatenFoodTable tbody");
+  const row = document.createElement("tr");
+
+  row.innerHTML = `
+    <td>${foodName}</td>
+    <td>${adjustedCalorie}</td>
+  `;
+
+  tableBody.appendChild(row);
+
+  // 총 칼로리 업데이트
+  updateTotalCalories();
+}
+
+// 총 칼로리 업데이트 함수
+function updateTotalCalories() {
+  const rows = document.querySelectorAll("#eatenFoodTable tbody tr");
+  let totalCalories = 0;
+
+  rows.forEach(row => {
+    const calorieCell = row.cells[1];
+    totalCalories += parseFloat(calorieCell.textContent);
+  });
+
+  document.getElementById("caloriesInput").value = totalCalories.toFixed(1);
+}
+
+
 
 // 박스를 이미지로 저장
 function downloadImage() {
