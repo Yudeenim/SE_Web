@@ -7,7 +7,7 @@ body {
 
 /* 공통 컨테이너 스타일 */
 .container {
-  margin: 20px;
+  margin: 20px auto;
   padding: 20px;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -107,25 +107,17 @@ nav ul li a {
 
 /* 모든 입력 박스 스타일 */
 input[type="text"],
-input[type="password"],
-input[type="email"],
 input[type="number"],
-input[type="range"],
 textarea {
-  width: 98%;
+  width: 100%; /* 부모 컨테이너에 맞춤 */
+  max-width: 500px; /* 입력 필드 최대 너비 설정 */
+  margin: 0 auto 15px; /* 하단 여백 추가 */
   padding: 12px 15px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
-  margin-bottom: 15px;
-  transition: all 0.2s ease;
-}
-
-/* 텍스트 영역(textarea) 스타일 */
-textarea {
-  resize: vertical; /* 수직 크기만 조정 가능하도록 */
-  height: 120px;
+  box-sizing: border-box; /* 테두리를 포함하여 크기 계산 */
 }
 
 /* placeholder 텍스트 스타일 */
