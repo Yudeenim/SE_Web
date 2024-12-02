@@ -170,3 +170,22 @@ select:focus {
   border-color: #007bff;
   outline: none;
 }
+
+/* 유튜브 컨테이너 스타일 */
+#youtubeContainer {
+  display: flex;
+  flex-direction: column; /* 세로로 정렬 */
+  justify-content: center; /* 수직 중앙 정렬 */
+  align-items: center; /* 수평 중앙 정렬 */
+  gap: 20px; /* 영상과 버튼 간격 */
+  padding: 20px;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 유튜브 영상 iframe 스타일 */
+iframe {
+  width: 100%;
+  max-width: 560px; /* 최대 너비 */
+  height: 315px; /* 16:9 비율 */
+  border: none;
+}

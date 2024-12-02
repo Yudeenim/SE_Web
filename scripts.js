@@ -159,7 +159,7 @@ function addFoodItem() {
 
   row.innerHTML = `
     <td>${foodName}</td>
-    <td>${foodCalorie}.toFixed(1)</td>
+    <td>${foodCalorie}</td>
     <td><button onclick="removeFoodItem(this)">삭제</button></td>
   `;
 
@@ -198,7 +198,7 @@ function addCalorieItem(type) {
     const customFactor = prompt("얼마나 드셨나요? (입력 값 예시: 0.5, 1.5, ...)");
     const customMultiplier = parseFloat(customFactor);
     if (!isNaN(customMultiplier) && customMultiplier > 0) {
-      adjustedCalorie = foodCalorie * customMultiplier;
+      adjustedCalorie = (foodCalorie * customMultiplier).toFixed(1);
     } else {
       alert("올바른 숫자를 입력하세요.");
       return;
