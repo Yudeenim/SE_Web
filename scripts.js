@@ -1,36 +1,36 @@
 // 운동 추천 데이터 (카테고리별 기본값)
 const exerciseRecommendations = {
-  '카테고리 1': [
-    { name: '1-1', youtube: 'https://www.youtube.com/embed/example1' },
-    { name: '1-2', youtube: 'https://www.youtube.com/embed/example2' },
-    { name: '1-3', youtube: 'https://www.youtube.com/embed/example3' },
-    { name: '1-4', youtube: 'https://www.youtube.com/embed/example4' }
+  '하체': [
+    { name: '하체 운동: 허벅지 앞 (대퇴사두근)', youtube: 'https://www.youtube.com/embed/CMBgkP1SsOk?si=CjAk5Zlgld7TFJxN' },
+    { name: '하체 운동: 허벅지 뒤 (햄스트링)', youtube: 'https://www.youtube.com/embed/2PGC_gmgj30?si=b4MAk0coEuT9ovNJ' },
+    { name: '하체 운동: 엉덩이', youtube: 'https://www.youtube.com/embed/-I-8SWoEFTE?si=61Gr1tkfGt8pfLqA' },
+    { name: '하체 운동: 종아리', youtube: 'https://www.youtube.com/embed/C7qnbmpLNGI?si=XgtODlyZX1cApTiN' }
   ],
-  '카테고리 2': [
-    { name: '2-1', youtube: 'https://www.youtube.com/embed/example5' },
-    { name: '2-2', youtube: 'https://www.youtube.com/embed/example6' },
-    { name: '2-3', youtube: 'https://www.youtube.com/embed/example7' },
-    { name: '2-4', youtube: 'https://www.youtube.com/embed/example8' }
+  '상체': [
+    { name: '상체 운동: 팔', youtube: 'https://www.youtube.com/embed/Y346900i9qE?si=xSncbU0d2QhZOK1Q' },
+    { name: '상체 운동: 어깨', youtube: 'https://www.youtube.com/embed/Lts-ddUgSFQ?si=jdg4rl0dmvB8Z1Pd' },
+    { name: '상체 운동: 가슴', youtube: 'https://www.youtube.com/embed/jBhZWX91bec?si=POkOR5TQUoQwzLss' },
+    { name: '상체 운동: 등', youtube: 'https://www.youtube.com/embed/x0UKQEG-mi4?si=aY3zN1pDISpTYDx1' }
   ],
-  '카테고리 3': [
-    { name: '3-1', youtube: 'https://www.youtube.com/embed/example9' },
-    { name: '3-2', youtube: 'https://www.youtube.com/embed/example10' },
-    { name: '3-3', youtube: 'https://www.youtube.com/embed/example11' },
-    { name: '3-4', youtube: 'https://www.youtube.com/embed/example12' }
+  '유산소': [
+    { name: '유산소: 안전성 향상', youtube: 'https://www.youtube.com/embed/bZqCjkqc9Qw?si=Wv9AsIP88MMTH8Gl' },
+    { name: '유산소: 전신', youtube: 'https://www.youtube.com/embed/Cvchap5oZSE?si=re3uNFRFiQbvWZKe' },
+    { name: '유산소: 체지방 연소', youtube: 'https://www.youtube.com/embed/RAXj64BEA9Y?si=u9JprXq73ogQHBrY' },
+    { name: '유산소: 심장 강화', youtube: 'https://www.youtube.com/embed/kRk3w1uZY0E?si=Gu8N5tdGcd91B1zb' }
   ],
-  '카테고리 4': [
-    { name: '4-1', youtube: 'https://www.youtube.com/embed/example13' },
-    { name: '4-2', youtube: 'https://www.youtube.com/embed/example14' },
-    { name: '4-3', youtube: 'https://www.youtube.com/embed/example15' },
-    { name: '4-4', youtube: 'https://www.youtube.com/embed/example16' }
+  '코어': [
+    { name: '코어: 복근', youtube: 'https://www.youtube.com/embed/Z_dgrjRlD_4?si=dYHqTsb1sOekM1Jf' },
+    { name: '코어: 옆구리', youtube: 'https://www.youtube.com/embed/IlPFzRSZrSU?si=oEcMUpibB9R73pXL' },
+    { name: '코어: 허리', youtube: 'https://www.youtube.com/embed/NRwFRLH9ulM?si=NQrw3Yc-hCHilYvN' },
+    { name: '코어: 힙', youtube: 'https://www.youtube.com/embed/LjmZ1YMOwws?si=yXuJYRrv9FdO8RtR' }
   ]
 };
 
 // 체크리스트 운동 항목(기본값)
 const exercises = [
-  { id: 'item1', name: '운동 1' },
-  { id: 'item2', name: '운동 2' },
-  { id: 'item3', name: '운동 3' }
+  { id: 'item1', name: '하체 운동: 허벅지 뒤 (햄스트링)' },
+  { id: 'item2', name: '상체 운동: 어깨' },
+  { id: 'item3', name: '코어: 복근' }
 ];
 
 // 운동 추천 항목 업데이트
@@ -100,34 +100,8 @@ function addChecklistItem() {
   if (userInput) {
     const checklist = document.getElementById('checklistContainer');
     addChecklistItemToContainer(checklist, userInput);
-    document.getElementById('userInput').value = ''; // 입력 필드 초기화
+    document.getElementById('userInput').value = '';
   }
-}
-
-// 박스 내용 업데이트
-function updateBox() {
-  const boxContent = document.getElementById('box');
-  const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
-  const calories = document.getElementById("caloriesInput").value;
-  const water = document.getElementById("waterInput").value;
-
-  let checklistContent = '';
-  checklistItems.forEach(item => {
-    const itemText = item.parentElement.textContent.replace('삭제', '').trim();
-    if (item.checked) {
-      checklistContent += `<p>✔ ${itemText}</p>`;
-    }
-  });
-
-  if (!checklistContent) checklistContent = '<p>운동 체크리스트가 체크되지 않았습니다.</p>';
-
-  boxContent.innerHTML = `
-    <input type="date" value="${boxContent.querySelector('input[type="date"]')?.value || ''}">
-    <h3>오늘 내가 한 운동은? </h3>
-    ${checklistContent}
-    ${calories ? `<p>칼로리 소비량: ${calories} kcal</p>` : ''}
-    ${water ? `<p>물 소비량: ${water} 리터</p>` : ''}
-  `;
 }
 
 // 삭제 버튼 누르면 항목 삭제하는 함수
@@ -184,6 +158,7 @@ function saveFoodToLocalStorage(name, calorie) {
   localStorage.setItem("foodCalorieData", JSON.stringify(foodData));
 }
 
+// 음식별 칼로리 표: 로컬 스토리지에서 삭제
 function removeFoodFromLocalStorage(name) {
   const foodData = JSON.parse(localStorage.getItem("foodCalorieData")) || [];
   const updatedData = foodData.filter(food => food.name !== name);
@@ -200,9 +175,12 @@ function loadFoodFromLocalStorage() {
   
   // 기본 음식 항목 추가
   const basicFoodItems = [
+    { name: '흰쌀밥 1공기', calorie: 210 },
     { name: '현미밥 1공기', calorie: 348 },
     { name: '고구마', calorie: 256 },
-    { name: '계란 1알', calorie: 70 }
+    { name: '바나나', calorie: 114 },
+    { name: '사과', calorie: 142 },
+    { name: '삶은 달걀', calorie: 65 }
   ];
 
   basicFoodItems.forEach(food => {
@@ -287,6 +265,32 @@ function updateTotalCalories() {
   } else {
     caloriesInput.value = '';
   }
+}
+
+// 이미지 박스 내용 업데이트
+function updateBox() {
+  const boxContent = document.getElementById('box');
+  const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
+  const calories = document.getElementById("caloriesInput").value;
+  const water = document.getElementById("waterInput").value;
+
+  let checklistContent = '';
+  checklistItems.forEach(item => {
+    const itemText = item.parentElement.textContent.replace('삭제', '').trim();
+    if (item.checked) {
+      checklistContent += `<p>✔ ${itemText}</p>`;
+    }
+  });
+
+  if (!checklistContent) checklistContent = '<p>운동 체크리스트가 체크되지 않았습니다.</p>';
+
+  boxContent.innerHTML = `
+    <input type="date" value="${boxContent.querySelector('input[type="date"]')?.value || ''}">
+    <h3>오늘 내가 한 운동은? </h3>
+    ${checklistContent}
+    ${calories ? `<p>칼로리 소비량: ${calories} kcal</p>` : ''}
+    ${water ? `<p>물 소비량: ${water} 리터</p>` : ''}
+  `;
 }
 
 // 박스를 이미지로 저장하는 함수
