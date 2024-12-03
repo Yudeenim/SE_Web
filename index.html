@@ -6,8 +6,8 @@
   <title>헬스케어 웹페이지</title>
   <link rel="stylesheet" href="styles.css"> <!-- CSS 파일 연결 -->
 </head>
-<body>
 
+<body>
     <!-- 네비게이션 바 -->
     <nav>
         <p>Healthcare Website<p>
@@ -62,70 +62,56 @@
       </thead>
 
       <tbody>
-        <!-- 미리 추가된 음식 예시 -->
-        <tr>
-          <td>현미밥 1공기</td>
-          <td>348</td>
-          <td><button onclick="removeFoodItem(this)">삭제</button></td>
-        </tr>
-        <tr>
-          <td>고구마</td>
-          <td>256</td>
-          <td><button onclick="removeFoodItem(this)">삭제</button></td>
-        </tr>
-        <tr>
-          <td>계란 1알</td>
-          <td>70</td>
-          <td><button onclick="removeFoodItem(this)">삭제</button></td>
-        </tr>
+        <!-- 여기에 사용자가 입력한 음식이 추가됨 -->
       </tbody>
     </table>
-        <!-- 음식 추가 입력 및 버튼 -->
+        <!-- 음식 추가 입력, 버튼 -->
         <div style="margin-top: 10px;">
             <input type="text" id="foodNameInput" placeholder="음식 이름 입력" style="margin-right: 10px;">
             <input type="number" id="foodCalorieInput" placeholder="칼로리 입력" min="0" style="margin-right: 10px;"><br>
             <button style = margin-left:0px; onclick="addFoodItem()">항목 추가</button>
-          </div>
+        </div>
     </div>
 
     <!-- 음식 칼로리 계산기 -->
     <div id="calorieCalc" class="container">
-        <h3>칼로리 계산기</h3>
-        <input type="text" id="calorieFoodName" placeholder="음식 이름 입력" style="margin-right: 10px;">
-        <input type="number" id="calorieFoodCalorie" placeholder="칼로리 입력" min="0" style="margin-right: 10px;"><br>
-        <button style = margin-left:0px; onclick="addCalorieItem('full')">전부</button>
-        <button style = margin-left:0px; onclick="addCalorieItem('half')">절반</button>
-        <button style = margin-left:0px; onclick="addCalorieItem('custom')">기타</button>
+      <h3>칼로리 계산기</h3>
+      <input type="text" id="calorieFoodName" placeholder="음식 이름 입력" style="margin-right: 10px;">
+      <input type="number" id="calorieFoodCalorie" placeholder="칼로리 입력" min="0" style="margin-right: 10px;"><br>
+      <button style = margin-left:0px; onclick="addCalorieItem('full')">전부</button>
+      <button style = margin-left:0px; onclick="addCalorieItem('half')">절반</button>
+      <button style = margin-left:0px; onclick="addCalorieItem('custom')">기타</button>
 
-        <h3>오늘 먹은 음식</h3>
-        <table id="eatenFoodTable" style="width: 100%; text-align: left; margin-top: 10px; border: 1px solid;">
-        <thead>
-            <tr>
-            <th>음식 이름</th>
-            <th>칼로리</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!--여기에 사용자가 입력한 음식이 추가됨-->
-        </tbody>
-        </table>
+      <h3>오늘 먹은 음식</h3>
+      <table id="eatenFoodTable" style="width: 100%; text-align: left; margin-top: 10px; border: 1px solid;">
+      <thead>
+          <tr>
+          <th>음식 이름</th>
+          <th>칼로리</th>
+          </tr>
+      </thead>
+      <tbody>
+          <!-- 여기에 사용자가 입력한 음식이 추가됨 -->
+      </tbody>
+      </table>
 
-        <!-- 칼로리/물 소비량 -->
-        <div class="container">
-            <h3>오늘의 칼로리 섭취량과 물 소비량</h3>
-            <div id="checklist">
-            <div id="caloriesContainer">
-                <label for="caloriesInput">칼로리 섭취량:</label>
-                <input type="number" id="caloriesInput" placeholder= "0 kcal" readonly style="margin-top: 5px;">
-            </div>
-            
-            <div id="waterContainer">
-                <label for="waterInput">물 소비량:</label>
-                <input type="number" id="waterInput" placeholder="물 소비량 입력 (리터)..." min="0" style="margin-top: 5px;">
-            </div>
-            </div>
-    </div>
-    </div>
+      <!-- 칼로리/물 소비량 -->
+      <div class="container">
+
+        <h3>오늘의 칼로리 섭취량과 물 소비량</h3>
+        <div id="checklist">
+          <div id="caloriesContainer">
+              <label for="caloriesInput">칼로리 섭취량:</label>
+              <input type="number" id="caloriesInput" placeholder= "0 kcal" readonly style="margin-top: 5px;">
+          </div>
+        
+          <div id="waterContainer">
+            <label for="waterInput">물 소비량:</label>
+            <input type="number" id="waterInput" placeholder="물 소비량 입력 (리터)..." min="0" style="margin-top: 5px;">
+          </div>
+        </div>
+      </div>
+
   <!-- 이미지 박스 -->
   <div class="container">
     <h3>운동 요약</h3>

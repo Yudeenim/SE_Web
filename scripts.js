@@ -1,4 +1,4 @@
-// 운동 추천 데이터 (카테고리별)
+// 운동 추천 데이터 (카테고리별 기본값)
 const exerciseRecommendations = {
   '카테고리 1': [
     { name: '1-1', youtube: 'https://www.youtube.com/embed/example1' },
@@ -57,66 +57,51 @@ function updateExerciseRecommendations() {
   }
 }
 
-// YouTube 영상을 표시
+// YouTube 영상 표시 함수
 function showYouTubeVideo(exerciseName, youtubeUrl) {
-const youtubeContainer = document.getElementById('youtubeContainer');
-youtubeContainer.innerHTML = `
-  <h3>${exerciseName}</h3>
-  <iframe width="560" height="315" src="${youtubeUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  <div>
-    <button onclick="addToChecklist('${exerciseName}')">체크리스트에 추가하기</button>
-    <button onclick="closeYouTube()">닫기</button>
-  </div>
-`;
-youtubeContainer.style.display = 'block';
+  const youtubeContainer = document.getElementById('youtubeContainer');
+  youtubeContainer.innerHTML = `
+    <h3>${exerciseName}</h3>
+    <iframe width="560" height="315" src="${youtubeUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div>
+      <button onclick="youtubeAddToChecklist('${exerciseName}')">체크리스트에 추가하기</button>
+      <button onclick="closeYouTube()">닫기</button>
+    </div>
+  `;
+  youtubeContainer.style.display = 'block';
 }
 
 // YouTube 영상 닫기
 function closeYouTube() {
-const youtubeContainer = document.getElementById('youtubeContainer');
-youtubeContainer.style.display = 'none';
-youtubeContainer.innerHTML = ''; // 내용 초기화
+  const youtubeContainer = document.getElementById('youtubeContainer');
+  youtubeContainer.style.display = 'none';
+  youtubeContainer.innerHTML = '';
 }
 
-// 체크리스트에 운동 추가
-function addToChecklist(exercise) {
-const checklist = document.getElementById('checklistContainer');
-const newItem = document.createElement('label');
-newItem.innerHTML = `
-  <input type="checkbox"> ${exercise}
-  <button onclick="removeItem(this)">삭제</button><br>
-`;
-
-checklist.appendChild(newItem);
-
-// 새 체크박스 이벤트 리스너 추가
-const newCheckbox = newItem.querySelector('input[type="checkbox"]');
-newCheckbox.addEventListener('change', updateBox);
-
-updateBox(); // 박스 업데이트
+// 체크리스트에 항목 추가 (공통)
+function addChecklistItemToContainer(container, itemText) {
+  const newItem = document.createElement('label');
+  newItem.innerHTML = `
+    <input type="checkbox" onchange="updateBox()"> ${itemText} 
+    <button onclick="removeItem(this)">삭제</button><br>`;
+  container.appendChild(newItem);
+  updateBox();
 }
 
-// 체크리스트 항목 추가
+// 체크리스트에 운동 추가 (유튜브)
+function youtubeAddToChecklist(exercise) {
+  const checklist = document.getElementById('checklistContainer');
+  addChecklistItemToContainer(checklist, exercise);
+}
+
+// 체크리스트에 항목 추가(운동 체크리스트)
 function addChecklistItem() {
-  const userInput = document.getElementById('userInput');
-  const newItemText = userInput.value.trim();
-
-  if (newItemText) {
+  const userInput = document.getElementById('userInput').value.trim();
+  if (userInput) {
     const checklist = document.getElementById('checklistContainer');
-    const newItem = document.createElement('label');
-    newItem.innerHTML = `
-      <input type="checkbox" onchange="updateBox()"> ${newItemText} 
-      <button onclick="removeItem(this)">삭제</button><br>`;
-    checklist.appendChild(newItem);
-
-    userInput.value = ''; // 입력 필드 초기화
-    updateBox(); // 박스 내용 업데이트
+    addChecklistItemToContainer(checklist, userInput);
+    document.getElementById('userInput').value = ''; // 입력 필드 초기화
   }
-}
-
-// 칼로리/물 소비량 기록
-function displayValues() {
-  updateBox(); // 박스 내용 업데이트
 }
 
 // 박스 내용 업데이트
@@ -145,47 +130,104 @@ function updateBox() {
   `;
 }
 
-// 항목 삭제
+// 삭제 버튼 누르면 항목 삭제하는 함수
 function removeItem(button) {
   const label = button.parentElement;
   label.remove();
-  updateBox(); // 박스 내용 업데이트
+  updateBox();
 }
 
-// 음식 항목 추가 함수
+// 음식별 칼로리 표: 음식 항목 추가 함수
 function addFoodItem() {
   const foodName = document.getElementById("foodNameInput").value.trim();
   const foodCalorie = document.getElementById("foodCalorieInput").value.trim();
 
-  if (!foodName || !foodCalorie || isNaN(foodCalorie) || foodCalorie < 0) {
+  if (!foodName || isNaN(foodCalorie) || foodCalorie <= 0) {
     alert("올바른 음식 이름과 칼로리를 입력하세요!");
     return;
   }
 
-  const tableBody = document.querySelector("#foodTable tbody");
-  const row = document.createElement("tr");
-
-  row.innerHTML = `
+  // 테이블에 새로운 음식 추가
+  const foodTable = document.getElementById("foodTable").querySelector("tbody");
+  const newRow = document.createElement("tr");
+  newRow.innerHTML = `
     <td>${foodName}</td>
     <td>${foodCalorie}</td>
     <td><button onclick="removeFoodItem(this)">삭제</button></td>
   `;
+  foodTable.appendChild(newRow);
 
-  tableBody.appendChild(row);
+  // 로컬 스토리지에 저장
+  saveFoodToLocalStorage(foodName, foodCalorie);
 
   // 입력 필드 초기화
-  document.getElementById("foodNameInput").value = "";
-  document.getElementById("foodCalorieInput").value = "";
+  document.getElementById("foodNameInput").value = '';
+  document.getElementById("foodCalorieInput").value = '';
 }
 
 // 음식 항목 삭제 함수
 function removeFoodItem(button) {
   const row = button.parentElement.parentElement;
+  const foodName = row.cells[0].textContent;
+
+  // 테이블에서 삭제
   row.remove();
+
+  // 로컬 스토리지에서 삭제
+  removeFoodFromLocalStorage(foodName);
 }
 
+// 음식별 칼로리 표: 로컬 스토리지에 저장
+function saveFoodToLocalStorage(name, calorie) {
+  const foodData = JSON.parse(localStorage.getItem("foodCalorieData")) || [];
+  foodData.push({ name, calorie });
+  localStorage.setItem("foodCalorieData", JSON.stringify(foodData));
+}
 
-// '전부', '절반', '기타' 버튼 클릭 시 동작하는 함수
+function removeFoodFromLocalStorage(name) {
+  const foodData = JSON.parse(localStorage.getItem("foodCalorieData")) || [];
+  const updatedData = foodData.filter(food => food.name !== name);
+  localStorage.setItem("foodCalorieData", JSON.stringify(updatedData));
+}
+
+function loadFoodFromLocalStorage() {
+  // 로컬 스토리지에서 음식 데이터 가져오기
+  const foodData = JSON.parse(localStorage.getItem("foodCalorieData")) || [];
+  const foodTable = document.getElementById("foodTable").querySelector("tbody");
+
+  // 기존 데이터를 테이블에 렌더링
+  foodTable.innerHTML = ''; // 기존 내용 제거
+  
+  // 기본 음식 항목 추가
+  const basicFoodItems = [
+    { name: '현미밥 1공기', calorie: 348 },
+    { name: '고구마', calorie: 256 },
+    { name: '계란 1알', calorie: 70 }
+  ];
+
+  basicFoodItems.forEach(food => {
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td>${food.name}</td>
+      <td>${food.calorie}</td>
+      <td><button onclick="removeFoodItem(this)">삭제</button></td>
+    `;
+    foodTable.appendChild(newRow);
+  });
+
+  // 로컬 스토리지에서 가져온 음식 추가
+  foodData.forEach(food => {
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td>${food.name}</td>
+      <td>${food.calorie}</td>
+      <td><button onclick="removeFoodItem(this)">삭제</button></td>
+    `;
+    foodTable.appendChild(newRow);
+  });
+}
+
+// 계산기: '전부', '절반', '기타' 버튼 클릭 시 동작하는 함수
 function addCalorieItem(type) {
   const foodName = document.getElementById("calorieFoodName").value.trim();
   const foodCalorie = parseFloat(document.getElementById("calorieFoodCalorie").value.trim());
@@ -196,8 +238,7 @@ function addCalorieItem(type) {
   }
 
   let adjustedCalorie = 0;
-  
-  // '전부', '절반', '기타' 처리
+
   if (type === 'full') {
     adjustedCalorie = foodCalorie;
   } else if (type === 'half') {
@@ -224,7 +265,6 @@ function addCalorieItem(type) {
 
   tableBody.appendChild(row);
 
-  // 총 칼로리 업데이트
   updateTotalCalories();
   updateBox();
 }
@@ -245,13 +285,11 @@ function updateTotalCalories() {
   if (rows.length > 0) {
     caloriesInput.value = totalCalories.toFixed(1);
   } else {
-    caloriesInput.value = ''; // 비워두기
+    caloriesInput.value = '';
   }
 }
 
-
-
-// 박스를 이미지로 저장
+// 박스를 이미지로 저장하는 함수
 function downloadImage() {
   html2canvas(document.getElementById('box')).then(canvas => {
     const link = document.createElement('a');
@@ -261,34 +299,23 @@ function downloadImage() {
   });
 }
 
-// 캡처한 박스 이미지를 Data URL로 변환
-function captureBoxImage() {
-  return html2canvas(document.getElementById('box')).then(canvas => canvas.toDataURL());
-}
-
 // 트위터 공유
 function shareToTwitter() {
-  captureBoxImage().then(imageUrl => {
-    const text = encodeURIComponent('오늘의 체크리스트를 공유합니다!');
-    downloadImage(imageUrl);
-    const url = `https://twitter.com/intent/tweet?text=${text}`;
-    window.open(url, '_blank');
-  });
+  const text = encodeURIComponent('오늘의 체크리스트를 공유합니다!');
+  const url = `https://twitter.com/intent/tweet?text=${text}`;
+  window.open(url, '_blank');
 }
 
 // 페이스북 공유
 function shareToFacebook() {
-  captureBoxImage().then(() => {
-    downloadImage();
-    const facebookPostUrl = 'https://www.facebook.com/';
-    window.open(facebookPostUrl, '_blank');
-  });
+  const facebookPostUrl = 'https://www.facebook.com/';
+  window.open(facebookPostUrl, '_blank');
 }
 
-// 초기화: 체크박스 및 입력 필드 변경 시 실시간 업데이트
+// 체크박스 및 입력 필드 변경 시 실시간 업데이트
 document.addEventListener('DOMContentLoaded', () => {
 
-  // 체크리스트 항목을 동적으로 생성하여 checklistContainer에 추가
+  // 체크리스트 항목을 동적으로 생성해 checklistContainer에 추가
   const checklistContainer = document.getElementById('checklistContainer');
   exercises.forEach(exercise => {
     const label = document.createElement('label');
@@ -300,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   updateTotalCalories(); // 페이지 로드 시 총 칼로리 업데이트
+  loadFoodFromLocalStorage(); // 저장된 음식 데이터 가져오기
 
   const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
   checklistItems.forEach(item => item.addEventListener('change', updateBox));
