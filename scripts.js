@@ -269,7 +269,9 @@ function updateTotalCalories() {
 
 // 이미지 박스 내용 업데이트
 function updateBox() {
-  const boxContent = document.getElementById('box');
+  const boxContent = document.getElementById('box-value');
+  if (!boxContent) return;  // boxContent가 없으면 함수 종료
+
   const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
   const calories = document.getElementById("caloriesInput").value;
   const water = document.getElementById("waterInput").value;
@@ -285,7 +287,6 @@ function updateBox() {
   if (!checklistContent) checklistContent = '<p>운동 체크리스트가 체크되지 않았습니다.</p>';
 
   boxContent.innerHTML = `
-    <input type="date" value="${boxContent.querySelector('input[type="date"]')?.value || ''}">
     <h3>오늘 내가 한 운동은? </h3>
     ${checklistContent}
     ${calories ? `<p>칼로리 소비량: ${calories} kcal</p>` : ''}
@@ -305,6 +306,7 @@ function downloadImage() {
 
 // 트위터 공유
 function shareToTwitter() {
+  downloadImage()
   const text = encodeURIComponent('오늘의 체크리스트를 공유합니다!');
   const url = `https://twitter.com/intent/tweet?text=${text}`;
   window.open(url, '_blank');
@@ -312,6 +314,7 @@ function shareToTwitter() {
 
 // 페이스북 공유
 function shareToFacebook() {
+  downloadImage()
   const facebookPostUrl = 'https://www.facebook.com/';
   window.open(facebookPostUrl, '_blank');
 }
@@ -341,3 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
   caloriesInput.addEventListener('input', updateBox);
   waterInput.addEventListener('input', updateBox);
 });
+
+module.exports = {
+  addFoodItem,
+  addCalorieItem,
+};
